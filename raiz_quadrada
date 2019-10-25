@@ -1,0 +1,73 @@
+def separa_valores_do_r (raiz):
+	raiz = str(raiz)
+	if raiz[0] == 'r':
+		raiz = '1' + raiz
+	posicao_do_r = raiz.find('r')
+	antes_do_r = raiz[0:posicao_do_r]
+	depois_do_r = raiz[posicao_do_r +1:]
+	return int(antes_do_r), int(depois_do_r)
+
+	
+def fatora (valor):
+	teste = 2
+	resultado = list()
+	while True:	
+		if valor == 1:
+			break	
+		elif valor % teste == 0:
+			resultado.append(teste)
+			valor = valor / teste
+		else:
+			teste += 1
+	return resultado
+	
+	
+def separa_os_pares(numero_fatorado):
+	valores = [] + numero_fatorado
+	antes_da_raiz = list()
+	depois_da_raiz = list()
+	
+	while True:
+		if len(valores) == 0:
+			break
+		elif len(valores) == 1:
+			depois_da_raiz.append(valores[0])
+			del valores[0]		
+		elif valores[0] == valores[1]:
+			antes_da_raiz.append(valores[0])
+			del valores[0]
+			del valores[0]
+		else:
+			depois_da_raiz.append(valores[0])
+			del valores[0]
+	return antes_da_raiz, depois_da_raiz
+	
+
+
+def multiplica_lista(lista):
+	resultado = 1
+	for c in lista:
+		resultado = resultado * c
+	return resultado
+	
+
+def raiz_quadrada(raiz):
+	valores = separa_valores_do_r(raiz)
+	numero_fatorado = fatora(valores[1])
+	divisao_dos_pares = separa_os_pares(numero_fatorado)
+	resultado_depois_da_raiz = multiplica_lista(divisao_dos_pares[1])
+	resultado_antes_da_raiz = valores[0] * multiplica_lista(divisao_dos_pares[0])
+	
+	if resultado_antes_da_raiz == 1 and resultado_depois_da_raiz == 1:
+		return '1'
+	elif resultado_antes_da_raiz == 1:
+		return f'√{resultado_depois_da_raiz}'
+	elif resultado_depois_da_raiz == 1:
+		return str(resultado_antes_da_raiz)
+	else:
+		return f'{resultado_antes_da_raiz}√{resultado_depois_da_raiz}'
+		
+if __name__ == '__main__':
+	while True:
+		numero = input('numero: ')
+		print(raiz_quadrada(numero))
